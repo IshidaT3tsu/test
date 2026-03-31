@@ -2,37 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>April 10?</title>
+  <title>Hello?</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary-pink: #ff77ff;
+      --deep-purple: #1a051a;
+      --soft-pink: #ffb3d9;
+      --hot-pink: #ff4d94;
+    }
+
     body {
       margin: 0;
       font-family: 'Press Start 2P', monospace;
-      /* Deep violet background with subtle texture */
-      background-color: #1a012e;
+      background-color: var(--deep-purple);
       color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       overflow: hidden;
+      image-rendering: pixelated;
     }
 
-    /* Floating static background elements */
-    #static-bg {
+    /* 8-bit Background Layer */
+    #bg-layer {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      z-index: -2;
-      opacity: 0.15;
+      z-index: -1;
+      opacity: 0.3;
+      pointer-events: none;
     }
 
-    .bg-sprite {
+    .bg-pixel {
       position: absolute;
-      image-rendering: pixelated;
+      color: var(--primary-pink);
+      font-size: 12px;
     }
 
     .container {
@@ -40,11 +49,10 @@
       max-width: 90%;
       width: 420px;
       padding: 30px;
-      border: 4px solid #fff;
-      /* Main box in violet/magenta combo */
-      background: rgba(46, 26, 46, 0.9);
-      box-shadow: 0 0 25px #ff4d94;
-      border-radius: 8px;
+      border: 4px solid var(--primary-pink);
+      background: rgba(30, 10, 30, 0.95);
+      box-shadow: 0 0 25px var(--hot-pink);
+      border-radius: 12px;
       position: relative;
       z-index: 10;
     }
@@ -53,7 +61,7 @@
 
     button {
       padding: 12px;
-      margin: 12px;
+      margin: 10px;
       border: 3px solid #fff;
       background: #222;
       color: #fff;
@@ -63,134 +71,138 @@
     }
 
     button:hover {
-      background: #ff4d94;
+      background: var(--hot-pink);
       color: #fff;
+      transform: scale(1.05);
     }
 
-    .yes { background: #ff4d94; color: #fff; }
+    .yes { background: var(--hot-pink); border-color: #fff; }
     .no { position: absolute; z-index: 20; }
 
     .press-start {
       animation: blink 1s infinite;
       margin-top: 20px;
-      font-size: 12px;
-      color: #ffdbf0;
+      font-size: 11px;
+      color: var(--soft-pink);
     }
 
     @keyframes blink {
-      0%,100% { opacity: 1; }
+      0%, 100% { opacity: 1; }
       50% { opacity: 0; }
     }
 
-    .pixel-heart {
+    .floating-heart {
       position: absolute;
-      color: #ff4d94;
+      color: var(--hot-pink);
       font-size: 20px;
       animation: floatUp 4s linear infinite;
-      z-index: -1;
+      z-index: 5;
+      pointer-events: none;
     }
 
     @keyframes floatUp {
-      0% { transform: translateY(100vh); opacity: 0; }
+      0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
       50% { opacity: 1; }
-      100% { transform: translateY(-10vh); opacity: 0; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
     }
 
-    /* Bit-Mojis (User and Partner) in the corners */
-    .moji-container {
-      position: absolute;
-      width: 40px;
-      height: 40px;
+    /* Bit-Mojis */
+    .bitmoji {
+      width: 60px;
+      height: 60px;
       image-rendering: pixelated;
+      margin-bottom: 10px;
     }
-    
-    #user-moji { bottom: 10px; right: 10px; background-image: url('moji1.png'); background-size: cover;}
-    #partner-moji { top: 10px; left: 10px; background-image: url('moji2.png'); background-size: cover; transform: scaleX(-1); }
 
-    .message-text {
+    .message-box {
       font-size: 10px;
       line-height: 1.8;
       text-align: left;
-      margin-top: 20px;
+      color: #ffd1ec;
+      margin-top: 15px;
+    }
+
+    .header-text {
+      color: var(--hot-pink);
+      text-shadow: 2px 2px #000;
     }
   </style>
 </head>
 <body>
 
-<div id="static-bg"></div>
+<div id="bg-layer"></div>
 
 <audio id="bgm" loop>
-  <source src="bgm.mp3" type="audio/mpeg">
+  <source src="https://cdn.pixabay.com/audio/2022/05/27/audio_180873748b.mp3" type="audio/mpeg">
 </audio>
 
 <audio id="clickSound">
-  <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_12b0c7443c.mp3" type="audio/mpeg">
+  <source src="https://cdn.pixabay.com/audio/2021/08/04/audio_12b0c7443c.mp3" type="audio/mpeg">
 </audio>
 
 <div class="container" id="page0" onclick="startGame()">
-  <h2>APRIL 10.EXE</h2>
-  <p class="press-start">PRESS START</p>
+  <h2 style="font-size: 20px;">APRIL 10.EXE</h2>
+  <img src="https://openclipart.org/image/400px/217154" class="bitmoji" alt="pixel heart">
+  <p class="press-start">CLICK TO START</p>
 </div>
 
 <div class="container hidden" id="page1">
-  <p>hi... this might be random</p>
-  <button onclick="playClick(); nextPage(2)">[ start ]</button>
+  <p>hi... this might be a bit random</p>
+  <button onclick="playClick(); nextPage(2)">[ next ]</button>
 </div>
 
 <div class="container hidden" id="page2">
   <p>> thinking...</p>
   <p>> what if...</p>
   <p>> we go out...</p>
-  <p>> like a real date? :]</p>
+  <p>> like a 2nd date? :]</p>
   <button onclick="playClick(); nextPage(3)">[ continue ]</button>
 </div>
 
 <div class="container hidden" id="page3">
-  <h2 style="color: #ff4d94;">APRIL 10</h2>
+  <h2 class="header-text">APRIL 10</h2>
   <p style="font-size:12px;">MENDOKORO / KODAWARI</p>
-  <p style="font-size:10px; color:#aaa;">MY TREAT • JUST SHOW UP</p>
+  <p style="font-size:9px; color: var(--soft-pink); margin-top: 5px;">MY TREAT • NO 11:59 DEADLINES</p>
   <button class="yes" onclick="playClick(); yesClicked()">[ YES ]</button>
   <button class="no" id="noBtn">[ NO ]</button>
 </div>
 
 <div class="container hidden" id="page4">
-  <h2>WAIT... REALLY?</h2>
-  <p>ok now im nervous</p>
+  <h2 style="font-size: 16px;">WAIT... REALLY?</h2>
+  <p>ok now im nervous haha</p>
   <p>see u april 10 :)</p>
-  <button onclick="playClick(); nextPage(5)">[ read letter ]</button>
+  <button onclick="playClick(); nextPage(5)">[ read message ]</button>
 </div>
 
-<div class="container hidden" id="page5" style="padding: 20px;">
-  <div id="partner-moji" class="moji-container"></div>
-  <div id="user-moji" class="moji-container"></div>
-  
-  <h2 style="font-size: 14px; margin-bottom: 10px;">MESSAGE</h2>
-  <p class="message-text">
-  Hey Seph :P<br><br>
-  I just wanted to say I really enjoyed our date, like genuinely. Kahit na it got cut short because of your 11:59 deadline T-T I still had a really good time with you. It kinda made me wish we had more time to just talk and get to know each other better.<br><br>
-  Honestly, that’s why I’ve been thinking of planning another one… something more chill, no rushing this time :P I’d really like that, if you’re down.<br><br>
-  No pressure though!! I just wanted you to know how I felt :)
-  </p>
+<div class="container hidden" id="page5">
+  <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+    <img src="https://openclipart.org/image/100px/271161" class="bitmoji" style="margin:0" alt="moji1">
+    <img src="https://openclipart.org/image/100px/271163" class="bitmoji" style="margin:0; transform: scaleX(-1);" alt="moji2">
+  </div>
+  <h2 style="font-size: 14px; color: var(--hot-pink); border-bottom: 2px solid var(--hot-pink); padding-bottom: 5px;">MESSAGE</h2>
+  <div class="message-box">
+    I really enjoyed our date, like genuinely. Kahit na it got cut short because of your 11:59 deadline T-T I still had a really good time with you.<br><br>
+    It made me wish we had more time to just talk and get to know each other better.<br><br>
+    That’s why I’ve been thinking of planning another one… something more chill, no rushing this time :P I’d really like that, if you’re down.<br><br>
+    No pressure though!! I just wanted you to know how I felt :)
+  </div>
 </div>
 
 <script>
-  // Setup the background patterns on load
-  document.addEventListener('DOMContentLoaded', () => {
-    const bg = document.getElementById('static-bg');
-    // Place background sprites (stars and hearts)
-    const sprites = ['heart.png', 'star.png'];
-    for (let i = 0; i < 40; i++) {
-        const img = document.createElement('img');
-        img.src = sprites[Math.floor(Math.random() * sprites.length)];
-        img.className = 'bg-sprite';
-        img.style.left = Math.random() * 100 + 'vw';
-        img.style.top = Math.random() * 100 + 'vh';
-        img.style.width = (Math.random() * 15 + 10) + 'px';
-        img.style.opacity = Math.random() * 0.5 + 0.1;
-        bg.appendChild(img);
-    }
-  });
+  // 1. Generate 8-bit background stars/hearts
+  const bgLayer = document.getElementById('bg-layer');
+  const symbols = ['★', '♥', '♦', '•'];
+  for (let i = 0; i < 40; i++) {
+    const pixel = document.createElement('div');
+    pixel.className = 'bg-pixel';
+    pixel.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+    pixel.style.left = Math.random() * 100 + 'vw';
+    pixel.style.top = Math.random() * 100 + 'vh';
+    pixel.style.opacity = Math.random();
+    bgLayer.appendChild(pixel);
+  }
 
+  // 2. Navigation Functions
   function nextPage(page) {
     document.querySelectorAll('.container').forEach(el => el.classList.add('hidden'));
     document.getElementById('page' + page).classList.remove('hidden');
@@ -198,7 +210,11 @@
 
   function startGame() {
     playClick();
-    document.getElementById('bgm').play().catch(()=>{});
+    const bgm = document.getElementById('bgm');
+    bgm.volume = 0.3; 
+    bgm.play().catch(() => {
+      console.log("Audio needs user interaction first.");
+    });
     nextPage(1);
   }
 
@@ -208,34 +224,34 @@
 
   function playClick() {
     const click = document.getElementById('clickSound');
-    if (click) click.play().catch(()=>{});
+    if (click) {
+      click.currentTime = 0;
+      click.play().catch(()=>{});
+    }
   }
 
-  // Define NO button logic, ensuring mobile support
+  // 3. The "Runaway" No Button Logic
   const noBtn = document.getElementById('noBtn');
-  
-  const moveNoButton = () => {
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 50);
+  const moveButton = (e) => {
+    if (e.type === 'touchstart') e.preventDefault();
+    const x = Math.random() * (window.innerWidth - 120);
+    const y = Math.random() * (window.innerHeight - 60);
     noBtn.style.left = x + 'px';
     noBtn.style.top = y + 'px';
   };
 
-  noBtn.addEventListener('mouseover', moveNoButton);
-  noBtn.addEventListener('touchstart', (e) => {
-    e.preventDefault(); // Prevents tapping the 'No' button on mobile
-    moveNoButton();
-  });
+  noBtn.addEventListener('mouseover', moveButton);
+  noBtn.addEventListener('touchstart', moveButton);
 
-  // Floating hearts logic
+  // 4. Floating Hearts Animation
   setInterval(() => {
     const heart = document.createElement('div');
-    heart.classList.add('pixel-heart');
-    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.classList.add('floating-heart');
     heart.innerHTML = '♥';
+    heart.style.left = Math.random() * 100 + 'vw';
     document.body.appendChild(heart);
     setTimeout(() => heart.remove(), 4000);
-  }, 600);
+  }, 700);
 </script>
 
 </body>
