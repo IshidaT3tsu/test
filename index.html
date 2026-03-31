@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>April 10?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Patrick Hand', cursive;
+      background: linear-gradient(135deg, #fff5f7, #ffeef2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 90%;
+      width: 400px;
+      padding: 20px;
+      animation: fadeIn 1s ease;
+    }
+
+    .hidden { display: none; }
+
+    button {
+      padding: 12px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+
+    button:hover { transform: scale(1.05); }
+
+    .yes { background: #ff9eb5; color: white; }
+    .no { background: #ddd; position: absolute; }
+
+    .heart {
+      position: absolute;
+      color: #ff9eb5;
+      animation: floatUp 5s linear infinite;
+      font-size: 20px;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(100vh); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-10vh); opacity: 0; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .ramen {
+      font-size: 40px;
+      animation: bounce 1.5s infinite;
+    }
+
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @media (max-width: 480px) {
+      h2 { font-size: 20px; }
+      p { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<audio id="bgm" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container" id="page1">
+  <h2>hi… uh, this might be a little random</h2>
+  <button onclick="startMusic(); nextPage(2)">click if curious</button>
+</div>
+
+<div class="container hidden" id="page2">
+  <p>so I was thinking…</p>
+  <p>what if…</p>
+  <p>we went out…</p>
+  <p>like… an actual date 😅</p>
+  <button onclick="nextPage(3)">continue</button>
+</div>
+
+<div class="container hidden" id="page3">
+  <div class="ramen">🍜</div>
+  <h2>april 10</h2>
+  <p>mendokoro / kodawari</p>
+  <p>my treat</p>
+  <p>you just have to show up</p>
+  <p style="font-size:14px; opacity:0.7">(i’ve been meaning to ask you this for a while…)</p>
+  <button class="yes" onclick="yesClicked()">okay… sure</button>
+  <button class="no" id="noBtn">no</button>
+</div>
+
+<div class="container hidden" id="page4">
+  <h2>wait… really?</h2>
+  <p>okay now I’m nervous</p>
+  <p>see you april 10 :)</p>
+  <p style="font-size:14px; opacity:0.7">ps: i’m actually really happy you said yes</p>
+</div>
+
+<script>
+  function nextPage(page) {
+    document.querySelectorAll('.container').forEach(el => el.classList.add('hidden'));
+    document.getElementById('page' + page).classList.remove('hidden');
+  }
+
+  function yesClicked() {
+    nextPage(4);
+  }
+
+  function startMusic() {
+    document.getElementById('bgm').play();
+  }
+
+  const noBtn = document.getElementById('noBtn');
+  noBtn.addEventListener('mouseover', () => {
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 50);
+    noBtn.style.left = x + 'px';
+    noBtn.style.top = y + 'px';
+  });
+
+  // floating hearts generator
+  setInterval(() => {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.innerHTML = '❤';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 5000);
+  }, 800);
+</script>
+
+</body>
+</html>
