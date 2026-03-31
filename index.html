@@ -4,12 +4,13 @@
   <meta charset="UTF-8">
   <title>April 10?</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      font-family: 'Patrick Hand', cursive;
-      background: linear-gradient(135deg, #fff5f7, #ffeef2);
+      font-family: 'Press Start 2P', monospace;
+      background: #0f0f1a;
+      color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -20,34 +21,46 @@
     .container {
       text-align: center;
       max-width: 90%;
-      width: 400px;
+      width: 420px;
       padding: 20px;
-      animation: fadeIn 1s ease;
+      border: 4px solid #fff;
+      background: #1a1a2e;
+      box-shadow: 0 0 20px #ff77ff;
     }
 
     .hidden { display: none; }
 
     button {
-      padding: 12px 20px;
-      margin: 10px;
-      border: none;
-      border-radius: 25px;
-      font-size: 16px;
+      padding: 12px;
+      margin: 12px;
+      border: 3px solid #fff;
+      background: #222;
+      color: #fff;
+      font-family: 'Press Start 2P', monospace;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
     }
 
-    button:hover { transform: scale(1.05); }
+    button:hover {
+      background: #ff77ff;
+      color: #000;
+    }
 
-    .yes { background: #ff9eb5; color: white; }
-    .no { background: #ddd; position: absolute; }
+    .yes { background: #00ffcc; color: #000; }
+    .no { position: absolute; }
 
-    .heart {
+    .press-start {
+      animation: blink 1s infinite;
+      margin-top: 20px;
+    }
+
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .pixel-heart {
       position: absolute;
-      color: #ff9eb5;
-      animation: floatUp 5s linear infinite;
-      font-size: 20px;
+      animation: floatUp 4s linear infinite;
     }
 
     @keyframes floatUp {
@@ -55,96 +68,120 @@
       50% { opacity: 1; }
       100% { transform: translateY(-10vh); opacity: 0; }
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .ramen {
-      font-size: 40px;
-      animation: bounce 1.5s infinite;
-    }
-
-    @keyframes bounce {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-
-    @media (max-width: 480px) {
-      h2 { font-size: 20px; }
-      p { font-size: 16px; }
-    }
   </style>
 </head>
 <body>
 
+<!-- sounds -->
 <audio id="bgm" loop>
   <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3" type="audio/mpeg">
 </audio>
 
-<div class="container" id="page1">
-  <h2>hi… uh, this might be a little random</h2>
-  <button onclick="startMusic(); nextPage(2)">click if curious</button>
+<audio id="clickSound">
+  <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_12b0c7443c.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="hoverSound">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6cbe6c4c42.mp3" type="audio/mpeg">
+</audio>
+
+<!-- intro screen -->
+<div class="container" id="page0" onclick="startGame()">
+  <h2>APRIL 10.EXE</h2>
+  <p class="press-start">PRESS START</p>
+</div>
+
+<div class="container hidden" id="page1">
+  <h2>hi... this might be random</h2>
+  <button onclick="playClick(); nextPage(2)">[ start ]</button>
 </div>
 
 <div class="container hidden" id="page2">
-  <p>so I was thinking…</p>
-  <p>what if…</p>
-  <p>we went out…</p>
-  <p>like… an actual date 😅</p>
-  <button onclick="nextPage(3)">continue</button>
+  <p>> thinking...</p>
+  <p>> what if...</p>
+  <p>> we go out...</p>
+  <p>> like a real date? :]</p>
+  <button onclick="playClick(); nextPage(3)">[ continue ]</button>
 </div>
 
 <div class="container hidden" id="page3">
-  <div class="ramen">🍜</div>
-  <h2>april 10</h2>
-  <p>mendokoro / kodawari</p>
-  <p>my treat</p>
-  <p>you just have to show up</p>
-  <p style="font-size:14px; opacity:0.7">(i’ve been meaning to ask you this for a while…)</p>
-  <button class="yes" onclick="yesClicked()">okay… sure</button>
-  <button class="no" id="noBtn">no</button>
+  <h2>APRIL 10</h2>
+  <p>MENDOKORO / KODAWARI</p>
+  <p>MY TREAT</p>
+  <p>JUST SHOW UP</p>
+  <button class="yes" onclick="playClick(); yesClicked()">[ YES ]</button>
+  <button class="no" id="noBtn">[ NO ]</button>
 </div>
 
 <div class="container hidden" id="page4">
-  <h2>wait… really?</h2>
-  <p>okay now I’m nervous</p>
-  <p>see you april 10 :)</p>
-  <p style="font-size:14px; opacity:0.7">ps: i’m actually really happy you said yes</p>
+  <h2>WAIT... REALLY?</h2>
+  <p>ok now im nervous</p>
+  <p>see u april 10 :)</p>
+  <button onclick="playClick(); nextPage(5)">[ open letter ]</button>
+</div>
+
+<div class="container hidden" id="page5">
+  <h2>LETTER</h2>
+  <p style="font-size:10px; line-height:1.6">
+  Hey Seph :P<br><br>
+  I just wanted to say I really enjoyed our date, like genuinely. Kahit na it got cut short because of your 11:59 deadline T-T I still had a really good time with you. It kinda made me wish we had more time to just talk and get to know each other better.<br><br>
+  Honestly, that’s why I’ve been thinking of planning another one… something more chill, no rushing this time :P I’d really like that, if you’re down.<br><br>
+  No pressure though!! I just wanted you to know how I felt :)
+  </p>
 </div>
 
 <script>
-  function nextPage(page) {
-    document.querySelectorAll('.container').forEach(el => el.classList.add('hidden'));
-    document.getElementById('page' + page).classList.remove('hidden');
-  }
+  document.addEventListener("DOMContentLoaded", () => {
 
-  function yesClicked() {
-    nextPage(4);
-  }
+    function nextPage(page) {
+      document.querySelectorAll('.container').forEach(el => el.classList.add('hidden'));
+      document.getElementById('page' + page).classList.remove('hidden');
+    }
 
-  function startMusic() {
-    document.getElementById('bgm').play();
-  }
+    function startGame() {
+      playClick();
+      document.getElementById('bgm').play().catch(()=>{});
+      nextPage(1);
+    }
 
-  const noBtn = document.getElementById('noBtn');
-  noBtn.addEventListener('mouseover', () => {
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 50);
-    noBtn.style.left = x + 'px';
-    noBtn.style.top = y + 'px';
+    function yesClicked() {
+      nextPage(4);
+    }
+
+    function playClick() {
+      const click = document.getElementById('clickSound');
+      if (click) click.play().catch(()=>{});
+    }
+
+    // expose functions globally for buttons
+    window.nextPage = nextPage;
+    window.startGame = startGame;
+    window.yesClicked = yesClicked;
+    window.playClick = playClick;
+
+    const noBtn = document.getElementById('noBtn');
+    const hoverSound = document.getElementById('hoverSound');
+
+    if (noBtn) {
+      noBtn.addEventListener('mouseover', () => {
+        if (hoverSound) hoverSound.play().catch(()=>{});
+        const x = Math.random() * (window.innerWidth - 100);
+        const y = Math.random() * (window.innerHeight - 50);
+        noBtn.style.left = x + 'px';
+        noBtn.style.top = y + 'px';
+      });
+    }
+
+    setInterval(() => {
+      const heart = document.createElement('div');
+      heart.classList.add('pixel-heart');
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.innerHTML = '♥';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 4000);
+    }, 600);
+
   });
-
-  // floating hearts generator
-  setInterval(() => {
-    const heart = document.createElement('div');
-    heart.classList.add('heart');
-    heart.style.left = Math.random() * window.innerWidth + 'px';
-    heart.innerHTML = '❤';
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 5000);
-  }, 800);
 </script>
 
 </body>
